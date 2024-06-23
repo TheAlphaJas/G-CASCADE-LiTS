@@ -1,7 +1,15 @@
-# G-CASCADE
+# G-CASCADE - LiTS
 
-Official Pytorch implementation of [G-CASCADE: Efficient Cascaded Graph Convolutional Decoding for 2D Medical Image Segmentation](https://openaccess.thecvf.com/content/WACV2024/html/Rahman_G-CASCADE_Efficient_Cascaded_Graph_Convolutional_Decoding_for_2D_Medical_Image_WACV_2024_paper.html) WACV 2024. 
- <br>
+Fork of the official Pytorch implementation of [G-CASCADE: Efficient Cascaded Graph Convolutional Decoding for 2D Medical Image Segmentation](https://openaccess.thecvf.com/content/WACV2024/html/Rahman_G-CASCADE_Efficient_Cascaded_Graph_Convolutional_Decoding_for_2D_Medical_Image_WACV_2024_paper.html) WACV 2024. 
+This fork has added support for the LiTS dataset, along with the others provided in the official repository.
+
+Fork Implemented By -
+[Jasmer Sanjotra](https://github.com/TheAlphaJas)
+<p> Indian Institute of Technology, Indore</p>
+ -------------------------------------------------------------------------------------------------------------------------------
+ 
+ Original Authors - 
+ 
 [Md Mostafijur Rahman](https://github.com/mostafij-rahman), [Radu Marculescu](https://radum.ece.utexas.edu/)
 <p>The University of Texas at Austin</p>
 

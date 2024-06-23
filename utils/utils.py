@@ -283,3 +283,8 @@ def val_single_volume(image, label, net, classes, patch_size=[256, 256], test_sa
         metric_list.append(calculate_dice_percase(prediction == i, label == i))
     return metric_list
 
+
+def random_split_array(data, ratios=(0.8, 0.1, 0.1)):
+      np.random.shuffle(data)  # Shuffle for randomness
+      split_indices = np.cumsum(ratios[:-1]) * len(data)
+      return np.split(data, split_indices.astype(int))

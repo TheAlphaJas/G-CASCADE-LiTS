@@ -3,36 +3,12 @@
 Fork of the official Pytorch implementation of [G-CASCADE: Efficient Cascaded Graph Convolutional Decoding for 2D Medical Image Segmentation](https://openaccess.thecvf.com/content/WACV2024/html/Rahman_G-CASCADE_Efficient_Cascaded_Graph_Convolutional_Decoding_for_2D_Medical_Image_WACV_2024_paper.html) WACV 2024. 
 This fork has added support for the LiTS dataset, along with the others provided in the official repository.
 
-Fork Implemented By -
-[Jasmer Sanjotra](https://github.com/TheAlphaJas)
-<p> Indian Institute of Technology, Indore</p>
- -------------------------------------------------------------------------------------------------------------------------------
- 
- Original Authors - 
- 
-[Md Mostafijur Rahman](https://github.com/mostafij-rahman), [Radu Marculescu](https://radum.ece.utexas.edu/)
-<p>The University of Texas at Austin</p>
-
-## Architecture
-
-<p align="center">
-<img src="architecture_gcascade.jpg" width=100% height=40% 
-class="center">
-</p>
-
-## Qualitative Results
-
-<p align="center">
-<img src="qualitative_results_synapse.png" width=100% height=40% 
-class="center">
-</p>
-
 ## Usage:
 ### Recommended environment:
 ```
-Python 3.8
-Pytorch 1.11.0
-torchvision 0.12.0
+Python 3.10.13
+Pytorch 2.1.2
+torchvision 0.16.2
 ```
 Please use ```pip install -r requirements.txt``` to install the dependencies.
 
@@ -50,6 +26,44 @@ Download the training and testing datasets [Google Drive](https://drive.google.c
 - **ISIC2018 dataset:**
 Download the training and validation datasets from https://challenge.isic-archive.com/landing/2018/ and merge them together. Afterwards, split the dataset into 80%, 10%, and 10% training, validation, and testing datasets, respectively. Move the splited dataset into './data/ISIC2018/' folder. 
 
+- **LITS dataset:**
+Download and obtain the dataset in jpg format. Create the following directory structure in the dataset folder. This directory will be the root_path for the train_list and test_lits scripts.
+Directory structure -
+```text
+root_path
+├── liver_0
+│   ├── images
+│   │   └── 45.jpg
+│   │   └── 46.jpg
+|   |   └── ---
+│   └── masks
+│       ├── liver
+|       │   └── 46.jpg
+|       │   └── 47.jpg
+|       |   └── ---
+│       └── cancer
+|           └── 46.jpg
+|           └── 47.jpg
+|           └── ---
+|
+|
+├── liver_130
+│   ├── images
+│   │   └── 45.jpg
+│   │   └── 46.jpg
+|   |   └── ---
+│   └── masks
+│       ├── liver
+|       │   └── 46.jpg
+|       │   └── 47.jpg
+|       |   └── ---
+│       └── cancer
+|           └── 46.jpg
+|           └── 47.jpg
+|           └── ---
+```
+
+
 ### Pretrained model:
 You should download the pretrained PVTv2 model from [Google Drive](https://drive.google.com/drive/folders/1Eu8v9vMRvt-dyCH0XSV2i77lAd62nPXV?usp=sharing), and then put it in the './pretrained_pth/pvt/' folder for initialization. Similarly, you should download the pretrained MaxViT models from [Google Drive](https://drive.google.com/drive/folders/1k-s75ZosvpRGZEWl9UEpc_mniK3nL2xq?usp=share_link), and then put it in the './pretrained_pth/maxvit/' folder for initialization.
 
@@ -66,6 +80,12 @@ For Polyp datasets training, run ```CUDA_VISIBLE_DEVICES=0 python -W ignore trai
 
 For ISIC2018 dataset training, run ```CUDA_VISIBLE_DEVICES=0 python -W ignore train_ISIC2018.py```
 
+For LiTS dataset training, run ```python G-CASCADE-LiTS/train_lits.py --root_path ./LiTS_root --batch_size 16 --max_epochs 200 --num_classes 2 --seed 32 --is_liver --val_log_interval 100 --log_interval 100```
+
+Note that for LiTS, the number of classes is 2, as the code has been implemented to run on liver seperately and tumor seperately. Open source contributions are welcome to change this.
+Regarding the training-testing-validation split, we need not mention the paths to each explicitly. The code assumes 131 folders are shown above (from liver_0 to liver_130), and will automatically split the indexes amongst training, testing and validation based on the random seed provided. In order to ensure consistency and avoid overlap of samples in training split and testing split, PLEASE ENSURE that the random seed passed to train_lits.py and test_lits.py is the same.
+The is_liver parameter is used to choose either the liver masks or tumor masks. Ensure that while training and later testing, if it is mentioned in one, it should also be mentioned in the other.
+
 ### Testing:
 ```
 cd into G-CASCADE 
@@ -79,16 +99,17 @@ For Polyp dataset testing, run ```CUDA_VISIBLE_DEVICES=0 python -W ignore test_p
 
 For ISIC2018 dataset testing, run ```CUDA_VISIBLE_DEVICES=0 python -W ignore test_ISIC2018.py```
 
-## Acknowledgement
-We are very grateful for these excellent works [timm](https://github.com/huggingface/pytorch-image-models), [MERIT](https://github.com/SLDGroup/MERIT), [CASCADE](https://github.com/SLDGroup/CASCADE), [PraNet](https://github.com/DengPingFan/PraNet), [Polyp-PVT](https://github.com/DengPingFan/Polyp-PVT) and [TransUNet](https://github.com/Beckschen/TransUNet), which have provided the basis for our framework.
+For LiTS dataset training, run ```python ./G-CASCADE-LiTS/test_lits.py --is_liver --root_path ./LiTS_root --seed 32 --num_classes 2 --batch_size 16 --test_log_interval 100```
 
-## Citations
-```
-@inproceedings{rahman2024g,
-  title={G-CASCADE: Efficient Cascaded Graph Convolutional Decoding for 2D Medical Image Segmentation},
-  author={Rahman, Md Mostafijur and Marculescu, Radu},
-  booktitle={Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision},
-  pages={7728--7737},
-  year={2024}
-}
-```
+### Credits:
+
+Fork Implemented By -
+[Jasmer Singh Sanjotra](https://github.com/TheAlphaJas)
+<p> Indian Institute of Technology Indore</p>
+ -------------------------------------------------------------------------------------------------------------------------------
+ 
+ 
+ Original Authors - 
+ 
+[Md Mostafijur Rahman](https://github.com/mostafij-rahman), [Radu Marculescu](https://radum.ece.utexas.edu/)
+<p>The University of Texas at Austin</p>

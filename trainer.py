@@ -54,7 +54,7 @@ def inference_lits(args, model, best_performance, X_test, Y_test):
     metric_list = 0.0
     for i_batch, sampled_batch in tqdm(enumerate(testloader)):
         h, w = sampled_batch["image"].size()[2:]
-        image, label, case_name = sampled_batch["image"], sampled_batch["label"], sampled_batch['case_name'][0]
+        image, label, case_name = sampled_batch["image"], sampled_batch["label"], None
         metric_i = val_single_volume(image, label, model, classes=args.num_classes, patch_size=[args.img_size, args.img_size],
                                       case=case_name, z_spacing=args.z_spacing)
         metric_list += np.array(metric_i)

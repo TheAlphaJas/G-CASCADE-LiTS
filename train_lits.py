@@ -39,8 +39,15 @@ parser.add_argument('--img_size', type=int,
                     default=224, help='input patch size of network input') #256
 parser.add_argument('--seed', type=int,
                     default=32, help='random seed')
+parser.add_argument('--log_interval', type=int,
+                    default=50, help='Interval for training logging')
+parser.add_argument('--save_interval', type=int,
+                    default=50, help='Interval for saving model')
+parser.add_argument('--val_log_interval', type=int,
+                    default=10, help='Interval for validation set evaluation logging')
 parser.add_argument('--is_liver', action='store_true',
                     default=0, help='add for liver, remove for tumor')
+
 
 args = parser.parse_args()
 

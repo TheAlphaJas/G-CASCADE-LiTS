@@ -49,6 +49,7 @@ def inference(args, model, best_performance):
 
 def inference_lits(args, model, best_performance, X_test, Y_test):
     print("Evaluating validation split")
+    val_loginterval = args.val_log_interval
     db_test = LITSTestDataset(X_test,Y_test,transform=None)
     testloader = DataLoader(db_test, batch_size=1, shuffle=False, num_workers=1)
     logging.info("{} test iterations per epoch".format(len(testloader)))
@@ -60,7 +61,7 @@ def inference_lits(args, model, best_performance, X_test, Y_test):
         metric_i = val_single_volume(image, label, model, classes=args.num_classes, patch_size=[args.img_size, args.img_size],
                                       case=case_name)
         metric_list += np.array(metric_i)
-        if (i_batch%50 == 0):
+        if (i_batch%val_loginterval == 0):
             logging.info('Epoch: %f ' % (i_batch))
     metric_list = metric_list / len(db_test)
     performance = np.mean(metric_list, axis=0)
@@ -143,7 +144,7 @@ def trainer_synapse(args, model, snapshot_path):
             writer.add_scalar('info/total_loss', loss, iter_num)
             
 
-            if iter_num % 50 == 0:
+            if iter_num % args.log_interval == 0:
                 logging.info('iteration %d, epoch %d : loss : %f, lr: %f' % (iter_num, epoch_num, loss.item(), lr_))
              
         logging.info('iteration %d, epoch %d : loss : %f, lr: %f' % (iter_num, epoch_num, loss.item(), lr_))
@@ -153,7 +154,7 @@ def trainer_synapse(args, model, snapshot_path):
         
         performance = inference(args, model, best_performance)
         
-        save_interval = 50
+        save_interval = args.save_interval
 
         if(best_performance <= performance):
             best_performance = performance
@@ -255,7 +256,7 @@ def trainer_lits(args, model, snapshot_path, X_train, Y_train, X_test, Y_test):
             writer.add_scalar('info/total_loss', loss, iter_num)
             
 
-            if iter_num % 50 == 0:
+            if iter_num % args.log_interval == 0:
                 logging.info('iteration %d, epoch %d : loss : %f, lr: %f' % (iter_num, epoch_num, loss.item(), lr_))
              
         logging.info('iteration %d, epoch %d : loss : %f, lr: %f' % (iter_num, epoch_num, loss.item(), lr_))
@@ -265,7 +266,7 @@ def trainer_lits(args, model, snapshot_path, X_train, Y_train, X_test, Y_test):
         
         performance = inference_lits(args, model, best_performance, X_test, Y_test)
         
-        save_interval = 50
+        save_interval = args.save_interval
 
         if(best_performance <= performance):
             best_performance = performance

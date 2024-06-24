@@ -21,7 +21,7 @@ parser.add_argument('--encoder', type=str,
 parser.add_argument('--skip_aggregation', type=str,
                     default='additive', help='Type of skip-aggregation: additive or concatenation')
 parser.add_argument('--root_path', type=str,
-                    default='./data/synapse/train_npz', help='root dir for data')
+                    default='./data/lits/', help='root dir for data')
 parser.add_argument('--num_classes', type=int,
                     default=2, help='output channel of network')
 parser.add_argument('--max_iterations', type=int,
@@ -155,4 +155,5 @@ if __name__ == "__main__":
     print("Val length : ", len(X_val))
     
     trainer = {'Lits': trainer_lits,}
-    trainer[dataset_name](args, net, snapshot_path, X_train, Y_train, X_val, Y_val)
+    print("Snapshot path: ", snapshot_path)
+    trainer[dataset_name](args, net, snapshot_path, X_test, Y_test, X_val, Y_val)

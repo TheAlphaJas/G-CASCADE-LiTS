@@ -56,7 +56,7 @@ def inference_lits(args, model, best_performance, X_test, Y_test):
         h, w = sampled_batch["image"].size()[2:]
         image, label, case_name = sampled_batch["image"], sampled_batch["label"], None
         metric_i = val_single_volume(image, label, model, classes=args.num_classes, patch_size=[args.img_size, args.img_size],
-                                      case=case_name, z_spacing=args.z_spacing)
+                                      case=case_name)
         metric_list += np.array(metric_i)
     metric_list = metric_list / len(db_test)
     performance = np.mean(metric_list, axis=0)

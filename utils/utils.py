@@ -189,17 +189,6 @@ def calculate_jaccard_percase(pred, gt):
     else:
         return 0
 
-def calculate_assd_percase(pred, gt):
-    pred[pred > 0] = 1
-    gt[gt > 0] = 1
-    if pred.sum() > 0 and gt.sum()>0:
-        dice = metric.binary.assd(pred, gt)
-        return dice
-    elif pred.sum() > 0 and gt.sum()==0:
-        return 0
-    else:
-        return 0
-
 def test_single_volume(image, label, net, classes, patch_size=[256, 256], test_save_path=None, case=None, z_spacing=1, class_names=None):
     image, label = image.squeeze(0).cpu().detach().numpy(), label.squeeze(0).cpu().detach().numpy()
     if class_names==None:

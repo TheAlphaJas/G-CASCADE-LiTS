@@ -48,6 +48,7 @@ def inference(args, model, best_performance):
     return performance
 
 def inference_lits(args, model, best_performance, X_test, Y_test):
+    cnt=0
     print("Evaluating validation split")
     val_loginterval = args.val_log_interval
     db_test = LITSTestDataset(X_test,Y_test,transform=None)
@@ -62,7 +63,7 @@ def inference_lits(args, model, best_performance, X_test, Y_test):
                                       case=case_name)
         metric_list += np.array(metric_i)
         if (i_batch%val_loginterval == 0):
-            logging.info('Epoch: %f ' % (i_batch))
+            logging.info('Epoch: %f , mean_dice: %f' % (i_batch, metric_list/(i_batch + 1)))
     metric_list = metric_list / len(db_test)
     performance = np.mean(metric_list, axis=0)
     best_performance = np.max(metric_list, axis=0)

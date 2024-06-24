@@ -220,7 +220,6 @@ def trainer_lits(args, model, snapshot_path, X_train, Y_train, X_test, Y_test):
     l = [0, 1, 2, 3]
     ss = [x for x in powerset(l)]
     #ss = [[0],[1],[2],[3]]
-    print(ss)
     
     for epoch_num in iterator:
         

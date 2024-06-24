@@ -163,4 +163,4 @@ if __name__ == "__main__":
     
     trainer = {'Lits': trainer_lits,}
     print("Snapshot path: ", snapshot_path)
-    trainer[dataset_name](args, net, snapshot_path, X_test, Y_test, X_val, Y_val)
+    trainer[dataset_name](args, net, snapshot_path, X_train, Y_train, X_val, Y_val)

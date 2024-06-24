@@ -60,7 +60,7 @@ def inference_lits(args, model, db_test, test_save_path=None):
                                       test_save_path=test_save_path, case=case_name, z_spacing=1)
         metric_list += np.array(metric_i)
         if (i_batch%args.test_log_interval == 0):
-            logging.info('idx %d , dice %f , hd95 %f , jacard %f' % (i_batch, np.mean(metric_i, axis=0)[0], np.mean(metric_i, axis=0)[1], np.mean(metric_i, axis=0)[2]))
+            logging.info('idx %d , mean dice %f , mean hd95 %f , mean jacard %f' % (i_batch, np.mean(metric_i, axis=0)[0]/(i_batch + 1), np.mean(metric_i, axis=0)[1]/(i_batch + 1), np.mean(metric_i, axis=0)[2]/(i_batch + 1)))
     metric_list = metric_list / len(db_test)
     # for i in range(1, args.num_classes):
     #     logging.info('Mean class (%d) mean_dice %f mean_hd95 %f, mean_jacard %f' % (i, metric_list[i-1][0], metric_list[i-1][1], metric_list[i-1][2]))

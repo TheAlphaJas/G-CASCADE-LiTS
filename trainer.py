@@ -66,6 +66,8 @@ def inference_lits(args, model, best_performance, X_test, Y_test):
 def trainer_synapse(args, model, snapshot_path):
     logging.basicConfig(filename=snapshot_path + "/log.txt", level=logging.INFO,
                         format='[%(asctime)s.%(msecs)03d] %(message)s', datefmt='%H:%M:%S')
+    # logging.basicConfig(filename=snapshot_path + "/log.txt", level=logging.INFO,
+    #                     format='[%(asctime)s.%(msecs)03d] %(message)s', datefmt='%H:%M:%S')
     logging.getLogger().addHandler(logging.StreamHandler(sys.stdout))
     logging.info(str(args))
     base_lr = args.base_lr
@@ -172,8 +174,10 @@ def trainer_synapse(args, model, snapshot_path):
 def trainer_lits(args, model, snapshot_path, X_train, Y_train, X_test, Y_test):
     date_and_time = datetime.datetime.now()
     os.makedirs(os.path.join(snapshot_path, 'test'), exist_ok=True)
-    logging.basicConfig(filename=snapshot_path + f"/{args.model_name}" + str(date_and_time) + "_log.txt", level=logging.INFO,
+    logging.basicConfig(filename=snapshot_path + "/log.txt", level=logging.INFO,
                         format='[%(asctime)s.%(msecs)03d] %(message)s', datefmt='%H:%M:%S')
+    # logging.basicConfig(filename=snapshot_path + f"/{args.model_name}" + str(date_and_time) + "_log.txt", level=logging.INFO,
+    #                     format='[%(asctime)s.%(msecs)03d] %(message)s', datefmt='%H:%M:%S')
     logging.getLogger().addHandler(logging.StreamHandler(sys.stdout))
     logging.info(str(args))
     base_lr = args.base_lr
@@ -186,7 +190,7 @@ def trainer_lits(args, model, snapshot_path, X_train, Y_train, X_test, Y_test):
     def worker_init_fn(worker_id):
         random.seed(args.seed + worker_id)
 
-    trainloader = DataLoader(db_train, batch_size=batch_size, shuffle=True, num_workers=args.num_workers, pin_memory=True,
+    trainloader = DataLoader(db_train, batch_size=batch_size, shuffle=True, pin_memory=True,
                              worker_init_fn=worker_init_fn)
     if args.n_gpu > 1:
         model = nn.DataParallel(model)

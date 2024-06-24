@@ -41,8 +41,6 @@ parser.add_argument('--deterministic', type=int,  default=1,
                     help='whether use deterministic training')
 parser.add_argument('--base_lr', type=float,  default=0.0001,
                     help='segmentation network learning rate')
-parser.add_argument('--base_lr', type=float,  default=0.0001,
-                    help='segmentation network learning rate')
 parser.add_argument('--test_log_interval', type=int,
                     default=10, help='Interval for testing set evaluation logging')
 

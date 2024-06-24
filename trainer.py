@@ -109,7 +109,6 @@ def trainer_synapse(args, model, snapshot_path):
     l = [0, 1, 2, 3]
     ss = [x for x in powerset(l)]
     #ss = [[0],[1],[2],[3]]
-    print(ss)
     
     for epoch_num in iterator:
         

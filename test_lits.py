@@ -51,13 +51,13 @@ def inference_lits(args, model, db_test, test_save_path=None):
     logging.info("{} test iterations per epoch".format(len(testloader)))
     model.eval()
     metric_list = 0.0
-    for i_batch, sampled_batch in tqdm(enumerate(testloader)):
+    for i_batch, sampled_batch in enumerate(testloader):
         h, w = sampled_batch["image"].size()[2:]
         image, label, case_name = sampled_batch["image"], sampled_batch["label"], None
         metric_i = test_lits_single(image, label, model, classes=args.num_classes, patch_size=[args.img_size, args.img_size],
                                       test_save_path=test_save_path, case=case_name, z_spacing=1)
         metric_list += np.array(metric_i)
-        logging.info('idx %d mean_dice %f mean_hd95 %f, mean_jacard %f' % (i_batch, np.mean(metric_i, axis=0)[0], np.mean(metric_i, axis=0)[1], np.mean(metric_i, axis=0)[2]))
+        logging.info('idx %d dice %f hd95 %f, jacard %f' % (i_batch, np.mean(metric_i, axis=0)[0], np.mean(metric_i, axis=0)[1], np.mean(metric_i, axis=0)[2]))
     metric_list = metric_list / len(db_test)
     # for i in range(1, args.num_classes):
     #     logging.info('Mean class (%d) mean_dice %f mean_hd95 %f, mean_jacard %f' % (i, metric_list[i-1][0], metric_list[i-1][1], metric_list[i-1][2]))

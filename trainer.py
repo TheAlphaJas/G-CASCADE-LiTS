@@ -43,23 +43,28 @@ def inference(args, model, best_performance):
         metric_list += np.array(metric_i)
     metric_list = metric_list / len(db_test)
     performance = np.mean(metric_list, axis=0)
+    best_performance = np.max(metric_list, axis=0)
     logging.info('Testing performance in val model: mean_dice : %f, best_dice : %f' % (performance, best_performance))
     return performance
 
 def inference_lits(args, model, best_performance, X_test, Y_test):
+    print("Evaluating validation split")
     db_test = LITSTestDataset(X_test,Y_test,transform=None)
     testloader = DataLoader(db_test, batch_size=1, shuffle=False, num_workers=1)
     logging.info("{} test iterations per epoch".format(len(testloader)))
     model.eval()
     metric_list = 0.0
-    for i_batch, sampled_batch in tqdm(enumerate(testloader)):
+    for i_batch, sampled_batch in enumerate(testloader):
         h, w = sampled_batch["image"].size()[2:]
         image, label, case_name = sampled_batch["image"], sampled_batch["label"], None
         metric_i = val_single_volume(image, label, model, classes=args.num_classes, patch_size=[args.img_size, args.img_size],
                                       case=case_name)
         metric_list += np.array(metric_i)
+        if (i_batch%50 == 0):
+            logging.info('Epoch: %f ' % (i_batch))
     metric_list = metric_list / len(db_test)
     performance = np.mean(metric_list, axis=0)
+    best_performance = np.max(metric_list, axis=0)
     logging.info('Testing performance in val model: mean_dice : %f, best_dice : %f' % (performance, best_performance))
     return performance
 
